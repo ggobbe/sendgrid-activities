@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"sendgrid-activities/api"
+	"sort"
 	"strings"
 )
 
@@ -78,10 +79,14 @@ func printActivities(activities []api.Activity, err error) {
 		printError(err)
 	}
 
-	if len(activities) > 0 {
-		fmt.Printf("\"Created\",\"Status\",\"Email\",\"Reason\"\n")
+	if len(activities) == 0 {
+		fmt.Println("No activities retrieved.")
+		return
 	}
 
+	sort.Sort(api.ByDate(activities))
+
+	fmt.Printf("\"Created\",\"Status\",\"Email\",\"Reason\"\n")
 	for _, activity := range activities {
 		fmt.Printf("\"%s\",\"%s\",\"%s\",\"%s\"\n", activity.Created, activity.Status, activity.Email, activity.Reason)
 	}
