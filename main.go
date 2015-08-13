@@ -48,7 +48,7 @@ func main() {
 }
 
 func printAll(sg *api.SGClient) {
-	var activities []*api.Activity
+	var activities []api.Activity
 	bouncesActivities, err := sg.GetBounces()
 	if err == nil {
 		activities = append(activities, bouncesActivities...)
@@ -73,7 +73,7 @@ func printAll(sg *api.SGClient) {
 	printActivities(activities, nil)
 }
 
-func printActivities(activities []*api.Activity, err error) {
+func printActivities(activities []api.Activity, err error) {
 	if err != nil {
 		printError(err)
 	}
