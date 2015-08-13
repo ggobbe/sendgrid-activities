@@ -10,5 +10,5 @@ Usage of sendgrid-activities:
 
 **Example**
 ```
-sendgrid-bounces -username=sendgridusername -password=P@ssw0rd1
+sendgrid-activities -username=sendgridusername -password=P@ssw0rd1
 ```
