@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"stuff/sendgrid-activities/api"
+	"sendgrid-activities/api"
 )
 
 func main() {
@@ -38,7 +38,7 @@ func main() {
 	if err != nil {
 		fmt.Println("The response of the InvalidEmails API doesn't match the expected format.\nThis can happen if you have entered the wrong credentials.")
 	} else {
-		printActivities(invalidEmails, "bounce")
+		printActivities(invalidEmails, "invalid-emails")
 	}
 }
 
