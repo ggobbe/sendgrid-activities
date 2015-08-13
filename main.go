@@ -70,7 +70,7 @@ func printAll(sg *api.SGClient) {
 		printError(err)
 	}
 
-	printActivities(activities, err)
+	printActivities(activities, nil)
 }
 
 func printActivities(activities []*api.Activity, err error) {
