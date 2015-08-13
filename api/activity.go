@@ -19,21 +19,21 @@ type Activity struct {
 }
 
 // GetBounces retrieves bounced emails as per https://sendgrid.com/docs/API_Reference/Web_API/bounces.html
-func (sg *SGClient) GetBounces() ([]*Activity, error) {
+func (sg *SGClient) GetBounces() ([]Activity, error) {
 	return sg.getActivities(bouncesAPI)
 }
 
 // GetBlocks retrieves bounced emails as per https://sendgrid.com/docs/API_Reference/Web_API/blocks.html
-func (sg *SGClient) GetBlocks() ([]*Activity, error) {
+func (sg *SGClient) GetBlocks() ([]Activity, error) {
 	return sg.getActivities(blocksAPI)
 }
 
 // GetInvalidEmails retrieves bounced emails as per https://sendgrid.com/docs/API_Reference/Web_API/invalid_emails.html
-func (sg *SGClient) GetInvalidEmails() ([]*Activity, error) {
+func (sg *SGClient) GetInvalidEmails() ([]Activity, error) {
 	return sg.getActivities(invalidEmailsAPI)
 }
 
-func (sg *SGClient) getActivities(apiURL string) ([]*Activity, error) {
+func (sg *SGClient) getActivities(apiURL string) ([]Activity, error) {
 	resp, err := http.Get(apiURL + "api_user=" + sg.apiUser + "&api_key=" + sg.apiKey + "&date=1")
 	if err != nil {
 		return nil, err
@@ -45,7 +45,7 @@ func (sg *SGClient) getActivities(apiURL string) ([]*Activity, error) {
 		return nil, err
 	}
 
-	var activities []*Activity
+	var activities []Activity
 	err = json.Unmarshal(body, &activities)
 	if err != nil {
 		return nil, err
