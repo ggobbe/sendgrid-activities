@@ -11,10 +11,10 @@ Usage of sendgrid-activities:
 
 **Example**
 ```
-sendgrid-activities -username=sendgridusername -password=P@ssw0rd1 -type=all
+sendgrid-activities -username="sendgridusername" -password="P@ssw0rd1" -type="all"
 ```
 
 **Output to CSV**
 ```
-sendgrid-activities -username=sendgridusername -password=P@ssw0rd1 > activities.csv
+sendgrid-activities -username="sendgridusername" -password="P@ssw0rd1" > activities.csv
 ```
