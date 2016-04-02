@@ -3,8 +3,10 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 const bouncesAPI = "https://api.sendgrid.com/api/bounces.get.json?"
@@ -40,7 +42,8 @@ func (sg *SGClient) GetInvalidEmails() ([]Activity, error) {
 }
 
 func (sg *SGClient) getActivities(apiURL string) ([]Activity, error) {
-	resp, err := http.Get(apiURL + "api_user=" + sg.apiUser + "&api_key=" + sg.apiKey + "&date=1")
+	query := fmt.Sprintf("%sapi_user=%s&api_key=%s&date=1", apiURL, url.QueryEscape(sg.apiUser), url.QueryEscape(sg.apiKey))
+	resp, err := http.Get(query)
 	if err != nil {
 		return nil, err
 	}
