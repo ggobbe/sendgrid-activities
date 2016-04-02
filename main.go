@@ -52,6 +52,7 @@ func main() {
 func printAll(sg *api.SGClient) {
 	var activities []api.Activity
 	var wg sync.WaitGroup
+	var mutex sync.Mutex
 
 	wg.Add(3)
 
@@ -59,7 +60,9 @@ func printAll(sg *api.SGClient) {
 		defer wg.Done()
 		bouncesActivities, err := sg.GetBounces()
 		if err == nil {
+			mutex.Lock()
 			activities = append(activities, bouncesActivities...)
+			mutex.Unlock()
 		} else {
 			printError(err)
 		}
@@ -69,7 +72,9 @@ func printAll(sg *api.SGClient) {
 		defer wg.Done()
 		blocksActivities, err := sg.GetBlocks()
 		if err == nil {
+			mutex.Lock()
 			activities = append(activities, blocksActivities...)
+			mutex.Unlock()
 		} else {
 			printError(err)
 		}
@@ -79,7 +84,9 @@ func printAll(sg *api.SGClient) {
 		defer wg.Done()
 		invalidEmailsActivities, err := sg.GetInvalidEmails()
 		if err == nil {
+			mutex.Lock()
 			activities = append(activities, invalidEmailsActivities...)
+			mutex.Unlock()
 		} else {
 			printError(err)
 		}
