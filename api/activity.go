@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 )
@@ -16,6 +17,11 @@ type Activity struct {
 	Created string `json:"created"`
 	Reason  string `json:"reason"`
 	Email   string `json:"email"`
+}
+
+// Error type will contain the error details
+type Error struct {
+	Error string `json:"error"`
 }
 
 // GetBounces retrieves bounced emails as per https://sendgrid.com/docs/API_Reference/Web_API/bounces.html
@@ -48,7 +54,12 @@ func (sg *SGClient) getActivities(apiURL string) ([]Activity, error) {
 	var activities []Activity
 	err = json.Unmarshal(body, &activities)
 	if err != nil {
-		return nil, err
+		var error Error
+		err = json.Unmarshal(body, &error)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.New(error.Error)
 	}
 
 	return activities, nil

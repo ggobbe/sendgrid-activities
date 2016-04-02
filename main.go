@@ -94,5 +94,4 @@ func printActivities(activities []api.Activity, err error) {
 
 func printError(err error) {
 	fmt.Printf("Error whilst retrieving activities: %s\n", err)
-	fmt.Printf("This usually happens if you have entered the wrong credentials.\n")
 }
