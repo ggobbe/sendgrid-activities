@@ -6,6 +6,7 @@ import (
 	"sendgrid-activities/api"
 	"sort"
 	"strings"
+	"sync"
 )
 
 const (
@@ -50,27 +51,41 @@ func main() {
 
 func printAll(sg *api.SGClient) {
 	var activities []api.Activity
-	bouncesActivities, err := sg.GetBounces()
-	if err == nil {
-		activities = append(activities, bouncesActivities...)
-	} else {
-		printError(err)
-	}
+	var wg sync.WaitGroup
 
-	blocksActivities, err := sg.GetBlocks()
-	if err == nil {
-		activities = append(activities, blocksActivities...)
-	} else {
-		printError(err)
-	}
+	wg.Add(3)
 
-	invalidEmailsActivities, err := sg.GetInvalidEmails()
-	if err == nil {
-		activities = append(activities, invalidEmailsActivities...)
-	} else {
-		printError(err)
-	}
+	go func() {
+		defer wg.Done()
+		bouncesActivities, err := sg.GetBounces()
+		if err == nil {
+			activities = append(activities, bouncesActivities...)
+		} else {
+			printError(err)
+		}
+	}()
 
+	go func() {
+		defer wg.Done()
+		blocksActivities, err := sg.GetBlocks()
+		if err == nil {
+			activities = append(activities, blocksActivities...)
+		} else {
+			printError(err)
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		invalidEmailsActivities, err := sg.GetInvalidEmails()
+		if err == nil {
+			activities = append(activities, invalidEmailsActivities...)
+		} else {
+			printError(err)
+		}
+	}()
+
+	wg.Wait()
 	printActivities(activities, nil)
 }
 
